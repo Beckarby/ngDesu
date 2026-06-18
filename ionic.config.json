@@ -1,0 +1,7 @@
+{
+  "name": "ngDesu",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
