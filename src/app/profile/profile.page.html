@@ -1,17 +1,80 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Profile
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="card">
+      <app-header subtitle="PROFILE"></app-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <div class="profile-section">
+        <div class="avatar-wrapper">
+          <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon>
+        </div>
+        <h2 class="username">Kusanagi</h2>
+        <span class="level-badge">Elite - Level 42</span>
+      </div>
 
-  <app-explore-container name="Profile Page"></app-explore-container>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">128</div>
+          <div class="stat-label">Anime Watched</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">47</div>
+          <div class="stat-label">Reviews Written</div>
+          <div class="stat-rating">Avg Rating: 7.5</div>
+        </div>
+      </div>
+
+      <div class="library-section">
+        <div class="section-row">
+          <span class="section-title">My Library</span>
+          <a class="view-all" routerLink="/tabs/library">View All</a>
+        </div>
+        <div class="library-list">
+          <div class="library-item">
+            <div class="item-cover">
+              <ion-icon name="tv-outline" class="cover-icon"></ion-icon>
+            </div>
+            <div class="item-info">
+              <div class="item-title">Cowboy Bebop</div>
+              <div class="item-sub">Progress: 12/26</div>
+            </div>
+            <ion-icon name="chevron-forward" class="item-arrow"></ion-icon>
+          </div>
+          <div class="library-item">
+            <div class="item-cover">
+              <ion-icon name="tv-outline" class="cover-icon"></ion-icon>
+            </div>
+            <div class="item-info">
+              <div class="item-title">Ghost in the Shell</div>
+              <div class="item-sub">Progress: 8/26</div>
+            </div>
+            <ion-icon name="chevron-forward" class="item-arrow"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="section-title">Account Settings</div>
+        <ion-list class="settings-list" lines="none">
+          <ion-item class="settings-item" button>
+            <div class="icon-circle" slot="start">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <ion-label>Edit Profile</ion-label>
+          </ion-item>
+          <ion-item class="settings-item danger-item" button>
+            <div class="icon-circle" slot="start">
+              <ion-icon name="log-out-outline"></ion-icon>
+            </div>
+            <ion-label>Sign Out</ion-label>
+          </ion-item>
+          <ion-item class="settings-item" button>
+            <div class="icon-circle" slot="start">
+              <ion-icon name="star-outline"></ion-icon>
+            </div>
+            <ion-label>Apply to Become a Critic</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
 </ion-content>
