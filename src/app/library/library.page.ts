@@ -8,6 +8,6 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
   styleUrls: ['library.page.scss'],
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent],
 })
-export class LibraryPage {
+export class libraryPage {
   constructor() {}
 }

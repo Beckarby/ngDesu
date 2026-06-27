@@ -1,0 +1,157 @@
+:host {
+  --card-bg: #1e1e24; 
+  --input-bg: #ffffff;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  min-height: 100%;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); 
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.app-title {
+  font-family: 'Lexend', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  font-style: italic;
+  color: var(--ion-color-primary); 
+  margin: 0 0 12px;
+  text-shadow: 0 0 15px rgba(var(--ion-color-primary-rgb), 0.5); 
+}
+
+.subtitle {
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: #d1d1d6;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Spacing between input groups */
+}
+
+.name-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.name-row .input-group {
+  flex: 1; /* Makes first and last name take up equal 50% width */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.custom-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #e5e5ea;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border-radius: 6px;
+  padding: 0 16px;
+  height: 48px; /* Slightly shorter than login to fit more fields comfortably */
+}
+
+.input-icon {
+  color: #c7c7cc;
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+ion-input {
+  --color: #1c1c1e;
+  --placeholder-color: #c7c7cc;
+  --placeholder-opacity: 1;
+  font-size: 15px;
+  --padding-start: 0;
+}
+
+.password-row {
+  position: relative;
+}
+
+.eye-icon {
+  color: #c7c7cc;
+  font-size: 22px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.error-text {
+  font-size: 11px;
+  color: var(--ion-color-danger); 
+  margin-top: 2px;
+}
+
+.submit-btn {
+  margin-top: 8px;
+  --background: var(--ion-color-primary); 
+  --color: var(--ion-color-primary-contrast); 
+  --border-radius: 8px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --box-shadow: 0 4px 20px rgba(var(--ion-color-primary-rgb), 0.4); 
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: none;
+}
+
+.submit-btn[disabled] {
+  opacity: 0.5;
+  --box-shadow: none;
+}
+
+.footer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-text {
+  font-size: 13px;
+  color: #a1a1aa;
+}
+
+.footer-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ion-color-primary); 
+  text-decoration: none;
+}

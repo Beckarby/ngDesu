@@ -19,7 +19,7 @@ export const routes: Routes = [
       {
         path: 'library',
         loadComponent: () =>
-          import('../library/library.page').then((m) => m.LibraryPage),
+          import('../library/library.page').then((m) => m.libraryPage),
       },
       {
         path: 'profile',

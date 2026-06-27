@@ -1,0 +1,83 @@
+<ion-content>
+  <div class="container">
+    <div class="card">
+      <div class="header-section">
+        <h1 class="app-title">NG Desu</h1>
+        <p class="subtitle">JOIN THE NETWORK</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-layout">
+        <div class="input-group">
+          <ion-label class="custom-label">USERNAME</ion-label>
+          <div class="input-wrapper">
+            <ion-icon name="person-outline" class="input-icon"></ion-icon>
+            <ion-input formControlName="username" placeholder="Choose a username" autocomplete="off"></ion-input>
+          </div>
+          @if (form.controls.username.touched && form.controls.username.invalid) {
+            <ion-text class="error-text">Username is required</ion-text>
+          }
+        </div>
+
+        <div class="name-row">
+          <div class="input-group">
+            <ion-label class="custom-label">FIRST NAME</ion-label>
+            <div class="input-wrapper">
+              <ion-input formControlName="firstName" placeholder="First name" autocomplete="off"></ion-input>
+            </div>
+            @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+              <ion-text class="error-text">Required</ion-text>
+            }
+          </div>
+
+          <div class="input-group">
+            <ion-label class="custom-label">LAST NAME</ion-label>
+            <div class="input-wrapper">
+              <ion-input formControlName="lastName" placeholder="Last name" autocomplete="off"></ion-input>
+            </div>
+            @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+              <ion-text class="error-text">Required</ion-text>
+            }
+          </div>
+        </div>
+
+        <div class="input-group">
+          <ion-label class="custom-label">EMAIL ADDRESS</ion-label>
+          <div class="input-wrapper">
+            <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+            <ion-input formControlName="email" type="email" placeholder="Enter your email" autocomplete="off"></ion-input>
+          </div>
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.email.errors?.['required']) { Valid email is required }
+              @if (form.controls.email.errors?.['email']) { Invalid email format }
+            </ion-text>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-label class="custom-label">PASSWORD</ion-label>
+          <div class="input-wrapper password-row">
+            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+            <ion-input formControlName="password" placeholder="••••••••" [type]="showPassword ? 'text' : 'password'" autocomplete="off"></ion-input>
+            <ion-icon class="eye-icon" [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" (click)="showPassword = !showPassword"></ion-icon>
+          </div>
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.password.errors?.['required']) { Password is required }
+              @if (form.controls.password.errors?.['minlength']) { Must be at least 6 characters }
+            </ion-text>
+          }
+        </div>
+
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
+          Sign Up
+        </ion-button>
+      </form>
+
+      <div class="footer">
+        <span class="footer-text">Already have an account?</span>
+        <ion-router-link class="footer-link" routerLink="/login">Log In</ion-router-link>
+      </div>
+    </div>
+  </div>
+</ion-content> 

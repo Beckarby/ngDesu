@@ -1,0 +1,56 @@
+<ion-content>
+  <div class="container">
+    <div class="card">
+      <div class="header-section">
+        <h1 class="app-title">NG Desu</h1>
+        <p class="subtitle">ENTER THE VOID</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-layout">
+        <div class="input-group">
+          <ion-label class="custom-label">EMAIL ADDRESS</ion-label>
+          <div class="input-wrapper">
+            <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+            <ion-input formControlName="username" placeholder="kusanagi@section9.jp" autocomplete="off"></ion-input>
+          </div>
+          @if (form.controls.username.touched && form.controls.username.invalid) {
+            <ion-text class="error-text">
+              <p>Email address is required</p>
+            </ion-text>
+          }
+        </div>
+
+        <div class="input-group">
+          <div class="label-row">
+            <ion-label class="custom-label">PASSWORD</ion-label>
+            <a href="#" class="forgot-link">FORGOT?</a>
+          </div>
+          <div class="input-wrapper password-row">
+            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+            <ion-input formControlName="password" placeholder="••••••••" [type]="showPassword ? 'text' : 'password'" autocomplete="off"></ion-input>
+            <ion-icon class="eye-icon" [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" (click)="showPassword = !showPassword"></ion-icon>
+          </div>
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.password.errors?.['required']) {
+                <p>Password is required</p>
+              }
+              @if (form.controls.password.errors?.['minlength']) {
+                <p>Password must be at least 6 characters</p>
+              }
+            </ion-text>
+          }
+        </div>
+
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
+          Login
+        </ion-button>
+      </form>
+
+      <div class="footer">
+        <span class="footer-text">New user?</span>
+        <ion-router-link class="footer-link" routerLink="/signup">Join the network</ion-router-link>
+      </div>
+    </div>
+  </div>
+</ion-content>
