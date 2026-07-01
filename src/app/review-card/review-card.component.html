@@ -1,0 +1,20 @@
+<div class="review-card">
+  <img [src]="review?.animeImage || 'assets/card/test.jpg'" alt="{{ review?.animeName }}" class="review-image" />
+  <div class="review-content">
+    <div class="review-header">
+      <span class="review-anime-name">{{ review?.animeName }}</span>
+      <span class="review-rating">★ {{ review?.rating }}</span>
+    </div>
+    <p class="review-text">{{ (review?.review || '').substring(0, 30) }}</p>
+    <div class="review-actions">
+      <ion-button class="action-btn" size="small" fill="outline" color="primary">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        Edit
+      </ion-button>
+      <ion-button class="action-btn" size="small" fill="solid" color="danger">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Delete
+      </ion-button>
+    </div>
+  </div>
+</div>
