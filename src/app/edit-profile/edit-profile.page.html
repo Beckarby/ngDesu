@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button class="cancel-btn" routerLink="/tabs/profile" fill="clear">Cancel</ion-button>
+    </ion-buttons>
+    <div slot="end" class="header-title">Edit Profile</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="card">
+      <div class="avatar-section">
+        <div class="avatar-container">
+          <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon>
+          <div class="avatar-badge">
+            <ion-icon name="pencil-outline"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-layout">
+        <div class="input-group">
+          <ion-label class="custom-label">NICKNAME</ion-label>
+          <div class="input-wrapper">
+            <ion-icon name="person-outline" class="input-icon"></ion-icon>
+            <ion-input formControlName="nickname" placeholder="Enter your nickname" autocomplete="off"></ion-input>
+          </div>
+          @if (form.controls.nickname.touched && form.controls.nickname.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.nickname.errors?.['required']) {
+                <p>Nickname is required</p>
+              }
+              @if (form.controls.nickname.errors?.['letterRequired']) {
+                <p>Nickname must contain at least one letter</p>
+              }
+            </ion-text>
+          }
+        </div>
+
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
+          Save
+        </ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>
