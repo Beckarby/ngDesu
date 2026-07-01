@@ -1,17 +1,34 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Library
-    </ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar class="library-toolbar">
+    <ion-title class="library-title">Library</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Library</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-segment [(ngModel)]="selectedSegment" class="library-segment">
+    <ion-segment-button value="completed" layout="icon-top">
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+      <ion-label>Completed</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="reviews" layout="icon-top">
+      <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+      <ion-label>Reviews</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-  <app-explore-container name="Library page"></app-explore-container>
-</ion-content>  
+  <div class="tab-content">
+    @if (selectedSegment === 'completed') {
+      <div class="anime-grid">
+        @for (anime of completedAnime; track anime.id) {
+          <app-anime-card [anime]="anime"></app-anime-card>
+        }
+      </div>
+    } @else {
+      <div class="reviews-list">
+        @for (review of reviews; track review.id) {
+          <app-review-card [review]="review"></app-review-card>
+        }
+      </div>
+    }
+  </div>
+</ion-content>

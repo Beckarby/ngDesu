@@ -1,0 +1,60 @@
+.library-toolbar {
+  --background: transparent;
+}
+
+.library-title {
+  font-family: 'Lexend', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ion-color-primary);
+  text-shadow: 0 0 15px rgba(var(--ion-color-primary-rgb), 0.5);
+  text-align: center;
+}
+
+.library-segment {
+  padding: 0 16px;
+  background: transparent;
+  --background: transparent;
+  --indicator-height: 3px;
+  --indicator-color: var(--ion-color-primary);
+}
+
+.library-segment ion-segment-button {
+  --background: transparent;
+  --background-checked: transparent;
+  --color: rgba(255, 255, 255, 0.4);
+  --color-checked: var(--ion-color-primary);
+  --indicator-color: var(--ion-color-primary);
+  --indicator-box-shadow: none;
+}
+
+.library-segment ion-segment-button ion-icon {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.library-segment ion-segment-button ion-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.library-segment::part(indicator) {
+  border-radius: 0;
+}
+
+.tab-content {
+  padding: 16px;
+}
+
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
