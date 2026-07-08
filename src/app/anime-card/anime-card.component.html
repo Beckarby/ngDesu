@@ -2,5 +2,11 @@
   <img [src]="anime?.image || 'assets/card/test.jpg'" alt="{{ anime?.name }}" class="card-image" />
   <div class="card-overlay">
     <span class="card-name">{{ anime?.name }}</span>
+    @if (anime?.userScore || anime?.criticScore) {
+      <div class="card-scores">
+        <span class="score-badge user-score">{{ anime?.userScore }}</span>
+        <span class="score-badge critic-score">{{ anime?.criticScore }}</span>
+      </div>
+    }
   </div>
 </div>

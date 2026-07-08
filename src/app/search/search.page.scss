@@ -10,3 +10,87 @@
   text-shadow: 0 0 15px rgba(var(--ion-color-primary-rgb), 0.5);
   text-align: center;
 }
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 0 16px;
+}
+
+.search-bar {
+  --background: rgba(255, 255, 255, 0.06);
+  --color: #fff;
+  --placeholder-color: rgba(255, 255, 255, 0.4);
+  --icon-color: rgba(255, 255, 255, 0.4);
+  --border-radius: 12px;
+  --box-shadow: none;
+  padding: 0 12px;
+}
+
+.chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 12px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.chips-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+ion-chip {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  min-width: fit-content;
+  transition: background 0.2s ease;
+}
+
+ion-chip.chip-active {
+  --background: var(--ion-color-primary);
+  --color: #fff;
+}
+
+ion-chip.chip-inactive {
+  --background: rgba(255, 255, 255, 0.08);
+  --color: rgba(255, 255, 255, 0.65);
+}
+
+.sort-segment {
+  padding: 0 12px;
+  background: transparent;
+  --background: transparent;
+  --indicator-height: 3px;
+  --indicator-color: var(--ion-color-primary);
+}
+
+.sort-segment ion-segment-button {
+  --background: transparent;
+  --background-checked: transparent;
+  --color: rgba(255, 255, 255, 0.4);
+  --color-checked: var(--ion-color-primary);
+  --indicator-color: var(--ion-color-primary);
+  --indicator-box-shadow: none;
+}
+
+.sort-segment ion-segment-button ion-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.sort-segment::part(indicator) {
+  border-radius: 0;
+}
+
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0 12px;
+}

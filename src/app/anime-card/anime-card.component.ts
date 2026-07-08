@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./anime-card.component.scss'],
 })
 export class AnimeCardComponent {
-  @Input() anime?: { id: number; name: string; image?: string };
+  @Input() anime?: { id: number; name: string; image?: string; userScore?: number; criticScore?: number };
 }

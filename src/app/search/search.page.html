@@ -5,5 +5,41 @@
 </ion-header>
 
 <ion-content>
-  <app-explore-container name="Search Page"></app-explore-container>
+  <div class="search-container">
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      placeholder="Search anime..."
+      class="search-bar"
+      animated
+    ></ion-searchbar>
+
+    <div class="chips-scroll">
+      @for (category of categories; track category) {
+        <ion-chip
+          [class.chip-active]="selectedCategory === category"
+          [class.chip-inactive]="selectedCategory !== category"
+          (click)="selectedCategory = category"
+        >
+          {{ category }}
+        </ion-chip>
+      }
+    </div>
+
+    <ion-segment [(ngModel)]="sortBy" class="sort-segment">
+      <ion-segment-button value="score">
+        <ion-label>Score</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="date">
+        <ion-label>Date</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div class="anime-grid">
+      @for (anime of filteredAnime; track anime.id) {
+        <div class="anime-card-item">
+          <app-anime-card [anime]="anime"></app-anime-card>
+        </div>
+      }
+    </div>
+  </div>
 </ion-content>
