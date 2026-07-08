@@ -1,0 +1,106 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="detail-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (detail) {
+    <div class="cover-section">
+      <img [src]="detail.image || 'assets/card/test.jpg'" alt="{{ detail.title }}" class="cover-image" />
+      <div class="cover-overlay">
+        <h1 class="detail-title">{{ detail.title }}</h1>
+        <div class="detail-scores">
+          <span class="score-badge user-score">{{ detail.userScore }}</span>
+          <span class="score-badge critic-score">{{ detail.criticScore }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+      <div class="info-row">
+        <div class="info-left">
+          <span class="release-date">{{ detail.releaseDate }}</span>
+          <div class="genres">
+            @for (genre of detail.genres; track genre) {
+              <span class="genre-chip">{{ genre }}</span>
+            }
+          </div>
+        </div>
+        <ion-button
+          [fill]="isWatched ? 'solid' : 'outline'"
+          class="watched-btn"
+          (click)="toggleWatched()"
+        >
+          @if (isWatched) {
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+            Completed
+          } @else {
+            Add to Completed
+          }
+        </ion-button>
+      </div>
+
+      <div class="synopsis-section">
+        <h2 class="section-label">Synopsis</h2>
+        <p class="synopsis-text">{{ detail.synopsis }}</p>
+      </div>
+
+      <div class="rating-section">
+        <h2 class="section-label">Your Rating</h2>
+        <div class="stars-row">
+          @for (starIdx of [1, 2, 3, 4, 5]; track starIdx) {
+            <ion-icon
+              [name]="starIdx <= userRating ? 'star' : 'star-outline'"
+              class="star-icon"
+              [class.star-filled]="starIdx <= userRating"
+              (click)="setRating(starIdx)"
+            ></ion-icon>
+          }
+        </div>
+      </div>
+
+      <div class="review-section">
+        <h2 class="section-label">Write a Review</h2>
+        <ion-textarea
+          [(ngModel)]="reviewText"
+          placeholder="Share your thoughts about this anime..."
+          class="review-textarea"
+          rows="5"
+          auto-grow
+        ></ion-textarea>
+        <ion-button
+          expand="block"
+          class="post-btn"
+          (click)="postReview()"
+        >
+          Post Review
+        </ion-button>
+      </div>
+
+      <div class="community-section">
+        <h2 class="section-label">Community Reviews</h2>
+        @for (review of communityReviews; track review.id) {
+          <div class="review-card">
+            <div class="review-header">
+              <span class="review-username">{{ review.username }}</span>
+              <div class="review-stars">
+                @for (starIdx of [1, 2, 3, 4, 5]; track starIdx) {
+                  <ion-icon
+                    [name]="starIdx <= review.rating ? 'star' : 'star-outline'"
+                    class="review-star"
+                    [class.filled]="starIdx <= review.rating"
+                  ></ion-icon>
+                }
+              </div>
+            </div>
+            <p class="review-text">{{ review.review }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</ion-content>

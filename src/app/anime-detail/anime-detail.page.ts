@@ -1,0 +1,94 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent, IonButton, IonTextarea, IonIcon } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { star, starOutline, checkmarkOutline } from 'ionicons/icons';
+
+interface CommunityReview {
+  id: number;
+  username: string;
+  rating: number;
+  review: string;
+}
+
+interface AnimeDetail {
+  id: number;
+  title: string;
+  image?: string;
+  userScore: number;
+  criticScore: number;
+  releaseDate: string;
+  genres: string[];
+  synopsis: string;
+}
+
+@Component({
+  selector: 'app-anime-detail',
+  templateUrl: 'anime-detail.page.html',
+  styleUrls: ['anime-detail.page.scss'],
+  imports: [FormsModule, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent, IonButton, IonTextarea, IonIcon],
+})
+export class AnimeDetailPage implements OnInit {
+  animeId!: number;
+  detail?: AnimeDetail;
+  isWatched = false;
+  userRating = 0;
+  reviewText = '';
+
+  private mockDb: Record<number, AnimeDetail> = {
+    1: { id: 1, title: 'Fullmetal Alchemist: Brotherhood', userScore: 9.3, criticScore: 9.6, releaseDate: '2009-04-05', genres: ['Action', 'Adventure', 'Fantasy'], synopsis: 'After losing their mother, brothers Edward and Alphonse Elric attempt a forbidden alchemical ritual that goes horribly wrong. Edward loses a leg and an arm, while Alphonse loses his entire body. Now Edward, armed with automail prosthetics, journeys with his brother\'s soul bound to a suit of armor to find the fabled Philosopher\'s Stone, hoping to restore what they lost. Their quest uncovers a dark conspiracy that threatens the entire nation.' },
+    2: { id: 2, title: 'Steins;Gate', userScore: 9.0, criticScore: 9.2, releaseDate: '2011-04-06', genres: ['Sci-Fi', 'Thriller'], synopsis: 'Self-proclaimed mad scientist Rintaro Okabe and his friends accidentally discover a way to send messages to the past using a modified microwave. As they experiment with time travel, they attract the attention of dangerous organizations and face devastating consequences. Okabe must navigate a web of cause and effect, making impossible choices to save the people he cares about.' },
+    3: { id: 3, title: 'Attack on Titan', userScore: 9.0, criticScore: 8.9, releaseDate: '2013-04-07', genres: ['Action', 'Drama', 'Fantasy'], synopsis: 'In a world where humanity lives behind massive walls to protect themselves from giant man-eating Titans, young Eren Yeager witnesses his mother being devoured during a Titan breach. Vowing revenge, he joins the military alongside his friends Mikasa and Armin. As they fight for survival, they uncover horrifying truths about the Titans and their own world.' },
+    4: { id: 4, title: 'Cowboy Bebop', userScore: 9.2, criticScore: 9.5, releaseDate: '1998-04-03', genres: ['Sci-Fi', 'Action', 'Noir'], synopsis: 'Spike Spiegel and Jet Black run a bounty-hunting business aboard the spaceship Bebop, chasing criminals across the solar system. They are joined by the enigmatic Faye Valentine, the eccentric child genius Ed, and a loyal dog named Ein. Together they face danger, confront their pasts, and try to make a living in a gritty, jazz-infused future.' },
+    5: { id: 5, title: 'Frieren: Beyond Journey\'s End', userScore: 9.1, criticScore: 9.4, releaseDate: '2023-09-29', genres: ['Fantasy', 'Adventure', 'Slice of Life'], synopsis: 'After a decades-long adventure, the elf mage Frieren and her party of heroes defeat the Demon King and bring peace to the land. As her mortal companions age and pass away, Frieren embarks on a new journey to understand the meaning of the connections she formed. Along the way, she takes on new companions and retraces the steps of her old adventure, reflecting on life, loss, and what it means to truly know someone.' },
+    6: { id: 6, title: 'Neon Genesis Evangelion', userScore: 8.7, criticScore: 9.1, releaseDate: '1995-10-04', genres: ['Sci-Fi', 'Psychological', 'Mecha'], synopsis: 'In a post-apocalyptic world, teenager Shinji Ikari is recruited by his estranged father to pilot a giant bio-mechanical mecha called an Evangelion to defend Earth against mysterious beings known as Angels. As Shinji and the other young pilots face increasingly deadly threats, they are forced to confront their own psychological traumas and the dark secrets behind the Evangelion project.' },
+    7: { id: 7, title: 'Your Lie in April', userScore: 8.8, criticScore: 8.6, releaseDate: '2014-10-10', genres: ['Romance', 'Drama', 'Music'], synopsis: 'Piano prodigy Kosei Arima loses his ability to hear the sound of his piano after his mother\'s death. Two years later, he meets the vibrant and free-spirited violinist Kaori Miyazono, who challenges him to return to the stage. Through music and friendship, Kosei begins to heal and rediscover his passion, but hidden truths threaten to shatter their fleeting time together.' },
+    8: { id: 8, title: 'Kaguya-sama: Love Is War', userScore: 8.5, criticScore: 8.3, releaseDate: '2019-01-12', genres: ['Romance', 'Comedy'], synopsis: 'Miyuki Shirogane and Kaguya Shinomiya are the top students at their prestigious academy, admired by all. They are secretly in love with each other, but both are too proud to confess. What follows is a hilarious battle of wits as they scheme and manipulate to force the other to confess first, each convinced that admitting their feelings would mean losing the war of love.' },
+    9: { id: 9, title: 'Barakamon', userScore: 8.4, criticScore: 8.2, releaseDate: '2014-07-06', genres: ['Slice of Life', 'Comedy'], synopsis: 'After punching a famous calligrapher who criticized his work, talented but arrogant calligrapher Seishuu Handa is exiled to a remote island to find himself. There, the loud and energetic islanders, especially the playful young girl Naru, disrupt his solitude and slowly teach him about life, community, and the true meaning of art.' },
+    10: { id: 10, title: 'Demon Slayer', userScore: 8.6, criticScore: 8.4, releaseDate: '2019-04-06', genres: ['Action', 'Fantasy', 'Historical'], synopsis: 'After his family is slaughtered and his sister Nezuko is turned into a demon, kind-hearted boy Tanjiro Kamado sets out to become a demon slayer. He joins the Demon Slayer Corps to hunt down the demon responsible and find a cure for his sister. Along the way, he makes powerful allies and faces terrifying demons in breathtaking battles.' },
+  };
+
+  communityReviews: CommunityReview[] = [
+    { id: 1, username: 'AnimeFan42', rating: 5, review: 'Absolutely masterpiece! The storytelling, character development, and animation are top-notch. This is the kind of anime that stays with you long after you finish watching.' },
+    { id: 2, username: 'MangaLover', rating: 4, review: 'Really enjoyed this one. The pacing was great and the plot kept me hooked throughout. Only minor gripes with the ending, but overall a fantastic experience.' },
+    { id: 3, username: 'OtakuKing', rating: 5, review: 'One of the best anime I have ever seen. The themes are deep and thought-provoking. Every episode left me wanting more. A must-watch for any anime fan.' },
+    { id: 4, username: 'NightOwl', rating: 3, review: 'It was good but not mind-blowing. Some episodes felt slow and the middle section dragged a bit. The soundtrack and visuals are beautiful though.' },
+  ];
+
+  private route = inject(ActivatedRoute);
+
+  constructor() {
+    addIcons({ star, starOutline, checkmarkOutline });
+  }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.animeId = Number(params.get('id'));
+      this.detail = this.mockDb[this.animeId];
+    });
+  }
+
+  setRating(star: number) {
+    this.userRating = star;
+  }
+
+  toggleWatched() {
+    this.isWatched = !this.isWatched;
+  }
+
+  postReview() {
+    // TODO: connect to backend
+    console.log('Posting review:', { animeId: this.animeId, rating: this.userRating, review: this.reviewText });
+  }
+
+  updateReview(reviewId: number) {
+    // TODO: connect to backend
+    console.log('Updating review:', reviewId, { rating: this.userRating, review: this.reviewText });
+  }
+
+  deleteReview(reviewId: number) {
+    // TODO: connect to backend
+    console.log('Deleting review:', reviewId);
+  }
+}
