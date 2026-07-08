@@ -5,9 +5,11 @@
 </ion-header>
 
 <ion-content>
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div class="section-title">Top Animes</div>
 
-  <div class="ion-text-center ion-padding">
-    <ion-button routerLink="/login" expand="block" color="primary">Log In</ion-button>
+  <div class="home-list">
+    @for (anime of topAnime; track anime.id) {
+      <app-top-anime-card [anime]="anime"></app-top-anime-card>
+    }
   </div>
 </ion-content>
