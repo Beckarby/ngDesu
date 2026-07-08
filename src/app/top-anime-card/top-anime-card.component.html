@@ -1,0 +1,12 @@
+<ion-card class="horizontal-card" [routerLink]="['/anime', anime?.id]">
+  <div class="card-inner">
+    <img [src]="anime?.image || 'assets/card/test.jpg'" alt="{{ anime?.title }}" class="card-image" />
+    <div class="card-body">
+      <div class="card-header">
+        <span class="card-title">{{ anime?.title }}</span>
+        <span class="card-score">{{ anime?.score }}</span>
+      </div>
+      <p class="card-description">{{ anime?.description }}</p>
+    </div>
+  </div>
+</ion-card>
