@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IonIcon, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { createOutline, trashOutline } from 'ionicons/icons';
@@ -17,6 +17,9 @@ export class ReviewCardComponent {
     rating: number;
     review: string;
   };
+
+  @Output() edit = new EventEmitter();
+  @Output() delete = new EventEmitter();
 
   constructor() {
     addIcons({ 'create-outline': createOutline, 'trash-outline': trashOutline });

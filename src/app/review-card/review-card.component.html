@@ -5,13 +5,13 @@
       <span class="review-anime-name">{{ review?.animeName }}</span>
       <span class="review-rating">★ {{ review?.rating }}</span>
     </div>
-    <p class="review-text">{{ (review?.review || '').substring(0, 30) }}</p>
+    <p class="review-text">{{ review?.review }}</p>
     <div class="review-actions">
-      <ion-button class="action-btn" size="small" fill="outline" color="primary">
+      <ion-button class="action-btn" size="small" fill="outline" color="primary" (click)="edit.emit(review)">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         Edit
       </ion-button>
-      <ion-button class="action-btn" size="small" fill="solid" color="danger">
+      <ion-button class="action-btn" size="small" fill="solid" color="danger" (click)="delete.emit(review)">
         <ion-icon name="trash-outline" slot="start"></ion-icon>
         Delete
       </ion-button>
