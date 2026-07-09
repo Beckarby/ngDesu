@@ -1,7 +1,7 @@
 <div class="card-wrapper" [routerLink]="['/anime', anime?.id]">
-  <img [src]="anime?.image || 'assets/card/test.jpg'" alt="{{ anime?.name }}" class="card-image" />
+  <img [src]="anime?.image || 'assets/card/test.jpg'" alt="{{ anime?.title }}" class="card-image" />
   <div class="card-overlay">
-    <span class="card-name">{{ anime?.name }}</span>
+    <span class="card-name">{{ anime?.title }}</span>
     @if (anime?.userScore || anime?.criticScore) {
       <div class="card-scores">
         <span class="score-badge user-score">{{ anime?.userScore }}</span>

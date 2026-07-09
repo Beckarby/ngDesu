@@ -8,5 +8,5 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
 })
 export class AnimeCardComponent {
-  @Input() anime?: { id: number; name: string; image?: string; userScore?: number; criticScore?: number };
+  @Input() anime?: { id: number; title: string; image?: string; userScore?: number; criticScore?: number };
 }
