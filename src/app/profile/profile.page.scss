@@ -38,6 +38,14 @@
   filter: drop-shadow(0 0 12px rgba(var(--ion-color-primary-rgb), 0.4));
 }
 
+.avatar-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
 .username {
   font-family: 'Lexend', sans-serif;
   font-size: 22px;
