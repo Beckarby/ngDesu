@@ -26,9 +26,49 @@
     } @else {
       <div class="reviews-list">
         @for (review of reviews; track review.id) {
-          <app-review-card [review]="review"></app-review-card>
+          <app-review-card [review]="review" (edit)="openEditReview($event)" (delete)="deleteReview($event)"></app-review-card>
         }
       </div>
     }
   </div>
+
+  <ion-modal
+    #editModal
+    [breakpoints]="[0, 0.5, 0.75]"
+    [initialBreakpoint]="0.5"
+    handleBehavior="cycle"
+  >
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="closeEditModal()" class="modal-cancel">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title class="modal-title">Edit Review</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="saveReview()" class="modal-save">Save</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <div class="edit-stars-row">
+          @for (starIdx of [1, 2, 3, 4, 5]; track starIdx) {
+            <ion-icon
+              [name]="starIdx <= editRating ? 'star' : 'star-outline'"
+              class="edit-star"
+              [class.filled]="starIdx <= editRating"
+              (click)="editRating = starIdx"
+            ></ion-icon>
+          }
+        </div>
+        <ion-textarea
+          [(ngModel)]="editText"
+          placeholder="Edit your review..."
+          class="edit-textarea"
+          rows="6"
+          auto-grow
+        ></ion-textarea>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

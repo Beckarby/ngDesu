@@ -58,3 +58,61 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.modal-cancel {
+  font-size: 15px;
+  font-weight: 500;
+  --color: var(--ion-color-primary);
+}
+
+.modal-save {
+  font-size: 15px;
+  font-weight: 700;
+  --color: var(--ion-color-primary);
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  padding: 0;
+}
+
+.edit-stars-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 0 20px;
+}
+
+.edit-star {
+  font-size: 32px;
+  color: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.edit-star.filled {
+  color: var(--ion-color-primary);
+}
+
+.edit-textarea {
+  --background: rgba(255, 255, 255, 0.06);
+  --color: #ffffff;
+  --border-radius: 10px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  padding-right: 30px;
+  margin: 0 16px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-textarea.ion-focused {
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 0 12px rgba(var(--ion-color-primary-rgb), 0.3);
+}
