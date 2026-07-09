@@ -12,8 +12,12 @@
     <div class="card">
       <div class="avatar-section">
         <div class="avatar-container">
-          <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon>
-          <div class="avatar-badge">
+          @if (currentAvatar) {
+            <img [src]="currentAvatar" class="avatar-img" />
+          } @else {
+            <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon>
+          }
+          <div class="avatar-badge" (click)="openModal()">
             <ion-icon name="pencil-outline"></ion-icon>
           </div>
         </div>
@@ -44,4 +48,41 @@
       </form>
     </div>
   </div>
+
+  <ion-modal
+    #avatarModal
+    [breakpoints]="[0, 0.5, 0.75]"
+    [initialBreakpoint]="0.5"
+    handleBehavior="cycle"
+  >
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>Choose Avatar</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-grid>
+          <ion-row>
+            @for (avatar of avatars; track avatar) {
+              <ion-col size="4">
+                <div
+                  class="avatar-option"
+                  [class.selected]="currentAvatar === avatar"
+                  (click)="selectAvatar(avatar)"
+                >
+                  <img [src]="avatar" class="avatar-thumb" />
+                </div>
+              </ion-col>
+            }
+          </ion-row>
+        </ion-grid>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

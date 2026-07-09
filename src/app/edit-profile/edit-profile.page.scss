@@ -151,3 +151,38 @@
   font-size: 16px;
   font-weight: 600;
 }
+
+.avatar-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.avatar-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.avatar-option.selected {
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 0 16px rgba(var(--ion-color-primary-rgb), 0.6);
+}
+
+.avatar-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
