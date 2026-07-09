@@ -8,7 +8,7 @@
   <div class="section-title">Top Animes</div>
 
   <div class="home-list">
-    @for (anime of topAnime; track anime.id) {
+    @for (anime of store.topAnimeList(); track anime.id) {
       <app-top-anime-card [anime]="anime"></app-top-anime-card>
     }
   </div>
