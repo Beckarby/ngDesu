@@ -39,6 +39,7 @@ export class AnimeStore {
     8: { id: 8, title: 'Kaguya-sama: Love Is War', userScore: 8.5, criticScore: 8.3, releaseDate: '2019-01-12', genres: ['Romance', 'Comedy'], synopsis: 'Miyuki Shirogane and Kaguya Shinomiya are the top students at their prestigious academy, admired by all. They are secretly in love with each other, but both are too proud to confess. What follows is a hilarious battle of wits as they scheme and manipulate to force the other to confess first, each convinced that admitting their feelings would mean losing the war of love.' },
     9: { id: 9, title: 'Barakamon', userScore: 8.4, criticScore: 8.2, releaseDate: '2014-07-06', genres: ['Slice of Life', 'Comedy'], synopsis: 'After punching a famous calligrapher who criticized his work, talented but arrogant calligrapher Seishuu Handa is exiled to a remote island to find himself. There, the loud and energetic islanders, especially the playful young girl Naru, disrupt his solitude and slowly teach him about life, community, and the true meaning of art.' },
     10: { id: 10, title: 'Demon Slayer', userScore: 8.6, criticScore: 8.4, releaseDate: '2019-04-06', genres: ['Action', 'Fantasy', 'Historical'], synopsis: 'After his family is slaughtered and his sister Nezuko is turned into a demon, kind-hearted boy Tanjiro Kamado sets out to become a demon slayer. He joins the Demon Slayer Corps to hunt down the demon responsible and find a cure for his sister. Along the way, he makes powerful allies and faces terrifying demons in breathtaking battles.' },
+    11: { id: 11, title: 'Ghost in the Shell', userScore: 8.9, criticScore: 9.3, releaseDate: '1995-11-18', genres: ['Sci-Fi', 'Action', 'Cyberpunk'], synopsis: 'In a future where cybernetic enhancements are commonplace, Major Motoko Kusanagi leads Section 9, an elite counter-cyberterrorist task force. When they hunt a mysterious hacker known as the Puppet Master, the Major confronts profound questions about identity, consciousness, and what it means to be human in an increasingly digital world.' },
   });
 
   readonly topAnimeIds = signal<number[]>([1, 2, 3, 4, 5, 6]);
@@ -58,7 +59,7 @@ export class AnimeStore {
 
   readonly completedAnime = signal<{ id: number; title: string }[]>([
     { id: 1, title: 'Cowboy Bebop' },
-    { id: 2, title: 'Ghost in the Shell' },
+    { id: 11, title: 'Ghost in the Shell' },
     { id: 6, title: 'Neon Genesis Evangelion' },
   ]);
 
