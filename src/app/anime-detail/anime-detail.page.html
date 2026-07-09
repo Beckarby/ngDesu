@@ -88,7 +88,7 @@
             <div class="review-header">
               <span class="review-username">{{ review.username }}</span>
               <div class="review-stars">
-                @for (starIdx of [1, 2, 3, 4, 5]; track starIdx) {
+          @for (starIdx of [1, 2, 3, 4, 5]; track starIdx) {
                   <ion-icon
                     [name]="starIdx <= review.rating ? 'star' : 'star-outline'"
                     class="review-star"
