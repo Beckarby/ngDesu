@@ -17,12 +17,12 @@ export class AnimeDetailPage implements OnInit {
   protected store = inject(AnimeStore);
 
   animeId!: number;
-  isWatched = false;
   userRating = 0;
   reviewText = '';
 
   get detail() { return this.store.getAnimeById(this.animeId); }
   get communityReviews() { return this.store.communityReviews(); }
+  get isWatched() { return this.store.completedAnime().some(a => a.id === this.animeId); }
 
   constructor() {
     addIcons({ star, starOutline, checkmarkOutline });
@@ -39,7 +39,6 @@ export class AnimeDetailPage implements OnInit {
   }
 
   toggleWatched() {
-    this.isWatched = !this.isWatched;
     this.store.toggleCompleted(this.animeId);
   }
 
