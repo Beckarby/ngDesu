@@ -17,6 +17,12 @@
   --background: transparent;
   --indicator-height: 3px;
   --indicator-color: var(--ion-color-primary);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.library-segment::-webkit-scrollbar {
+  display: none;
 }
 
 .library-segment ion-segment-button {
@@ -26,6 +32,7 @@
   --color-checked: var(--ion-color-primary);
   --indicator-color: var(--ion-color-primary);
   --indicator-box-shadow: none;
+  min-width: 88px;
 }
 
 .library-segment ion-segment-button ion-icon {
@@ -34,7 +41,7 @@
 }
 
 .library-segment ion-segment-button ion-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.3px;
 }

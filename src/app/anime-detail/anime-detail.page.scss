@@ -113,7 +113,7 @@ ion-header {
   color: var(--ion-color-primary);
 }
 
-.watched-btn {
+.status-btn {
   flex-shrink: 0;
   --border-radius: 8px;
   font-size: 12px;
@@ -123,14 +123,44 @@ ion-header {
   min-height: 36px;
 }
 
-.watched-btn[fill="solid"] {
+.status-btn[fill="solid"] {
   --background: var(--ion-color-primary);
   --color: #fff;
 }
 
-.watched-btn[fill="outline"] {
+.status-btn[fill="outline"] {
   --border-color: var(--ion-color-primary);
   --color: var(--ion-color-primary);
+}
+
+.status-list {
+  background: #1e1e24;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.status-list ion-item {
+  --background: transparent;
+  --color: #ffffff;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --min-height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-list ion-item.current {
+  --color: var(--ion-color-primary);
+}
+
+.status-icon {
+  font-size: 18px;
+  color: inherit;
+}
+
+.check-icon {
+  font-size: 18px;
+  color: var(--ion-color-primary);
 }
 
 .section-label {

@@ -31,16 +31,12 @@
           </div>
         </div>
         <ion-button
-          [fill]="isWatched ? 'solid' : 'outline'"
-          class="watched-btn"
-          (click)="toggleWatched()"
+          [fill]="currentStatus ? 'solid' : 'outline'"
+          class="status-btn"
+          (click)="openStatusMenu()"
         >
-          @if (isWatched) {
-            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
-            Completed
-          } @else {
-            Add to Completed
-          }
+          <ion-icon name="ellipsis-vertical" slot="start"></ion-icon>
+          {{ statusLabel(currentStatus) }}
         </ion-button>
       </div>
 
@@ -103,4 +99,30 @@
       </div>
     </div>
   }
+
+  <ion-popover
+    [isOpen]="isStatusMenuOpen"
+    (didDismiss)="isStatusMenuOpen = false"
+    side="bottom"
+    alignment="end"
+    class="status-popover"
+  >
+    <ng-template>
+      <ion-list class="status-list">
+        @for (s of watchStatuses; track s.value) {
+          <ion-item
+            button
+            (click)="selectStatus(s.value)"
+            [class.current]="currentStatus === s.value"
+          >
+            <ion-icon [name]="s.icon" slot="start" class="status-icon"></ion-icon>
+            <ion-label>{{ s.label }}</ion-label>
+            @if (currentStatus === s.value) {
+              <ion-icon name="checkmark-outline" slot="end" class="check-icon"></ion-icon>
+            }
+          </ion-item>
+        }
+      </ion-list>
+    </ng-template>
+  </ion-popover>
 </ion-content>

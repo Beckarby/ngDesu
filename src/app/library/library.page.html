@@ -5,28 +5,30 @@
 </ion-header>
 
 <ion-content>
-  <ion-segment [(ngModel)]="selectedSegment" class="library-segment">
-    <ion-segment-button value="completed" layout="icon-top">
-      <ion-icon name="checkmark-circle-outline"></ion-icon>
-      <ion-label>Completed</ion-label>
-    </ion-segment-button>
+  <ion-segment [(ngModel)]="selectedSegment" class="library-segment" scrollable>
     <ion-segment-button value="reviews" layout="icon-top">
       <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
       <ion-label>Reviews</ion-label>
     </ion-segment-button>
+    @for (s of watchStatuses; track s.value) {
+      <ion-segment-button [value]="s.value" layout="icon-top">
+        <ion-icon [name]="s.icon"></ion-icon>
+        <ion-label>{{ s.label }}</ion-label>
+      </ion-segment-button>
+    }
   </ion-segment>
 
   <div class="tab-content">
-    @if (selectedSegment === 'completed') {
-      <div class="anime-grid">
-        @for (anime of completedAnime; track anime.id) {
-          <app-anime-card [anime]="anime"></app-anime-card>
-        }
-      </div>
-    } @else {
+    @if (selectedSegment === 'reviews') {
       <div class="reviews-list">
         @for (review of reviews; track review.id) {
           <app-review-card [review]="review" (edit)="openEditReview($event)" (delete)="deleteReview($event)"></app-review-card>
+        }
+      </div>
+    } @else {
+      <div class="anime-grid">
+        @for (anime of animeForSegment(); track anime.id) {
+          <app-anime-card [anime]="anime"></app-anime-card>
         }
       </div>
     }

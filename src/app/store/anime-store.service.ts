@@ -26,6 +26,22 @@ export interface CommunityReview {
   review: string;
 }
 
+export type WatchStatus = 'to_watch' | 'watching' | 'dropped' | 'completed' | 'fav';
+
+export const WATCH_STATUSES: { value: WatchStatus; label: string; icon: string }[] = [
+  { value: 'to_watch', label: 'To Watch', icon: 'bookmark-outline' },
+  { value: 'watching', label: 'Watching', icon: 'eye-outline' },
+  { value: 'dropped', label: 'Dropped', icon: 'close-circle-outline' },
+  { value: 'completed', label: 'Completed', icon: 'checkmark-circle-outline' },
+  { value: 'fav', label: 'Favorites', icon: 'heart-outline' },
+];
+
+export interface LibraryEntry {
+  id: number;
+  title: string;
+  status: WatchStatus;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AnimeStore {
   readonly animeDetails = signal<Record<number, Anime>>({
@@ -57,10 +73,10 @@ export class AnimeStore {
     { id: 4, username: 'NightOwl', rating: 3, review: 'It was good but not mind-blowing. Some episodes felt slow and the middle section dragged a bit. The soundtrack and visuals are beautiful though.' },
   ]);
 
-  readonly completedAnime = signal<{ id: number; title: string }[]>([
-    { id: 1, title: 'Cowboy Bebop' },
-    { id: 11, title: 'Ghost in the Shell' },
-    { id: 6, title: 'Neon Genesis Evangelion' },
+  readonly libraryAnime = signal<LibraryEntry[]>([
+    { id: 1, title: 'Cowboy Bebop', status: 'completed' },
+    { id: 11, title: 'Ghost in the Shell', status: 'fav' },
+    { id: 6, title: 'Neon Genesis Evangelion', status: 'watching' },
   ]);
 
   readonly topAnimeList = computed(() => {
@@ -115,11 +131,20 @@ export class AnimeStore {
     this.reviews.update(r => r.filter(rev => rev.id !== id));
   }
 
-  toggleCompleted(id: number) {
-    this.completedAnime.update(list => {
+  getAnimeStatus(id: number): WatchStatus | null {
+    return this.libraryAnime().find(a => a.id === id)?.status ?? null;
+  }
+
+  getAnimeByStatus(status: WatchStatus): LibraryEntry[] {
+    return this.libraryAnime().filter(a => a.status === status);
+  }
+
+  setAnimeStatus(id: number, status: WatchStatus) {
+    const title = this.animeDetails()[id]?.title ?? `Anime #${id}`;
+    this.libraryAnime.update(list => {
       const exists = list.find(a => a.id === id);
-      if (exists) return list.filter(a => a.id !== id);
-      return [...list, { id, title: this.animeDetails()[id]?.title ?? `Anime #${id}` }];
+      if (exists) return list.map(a => a.id === id ? { ...a, status } : a);
+      return [...list, { id, title, status }];
     });
   }
 }
