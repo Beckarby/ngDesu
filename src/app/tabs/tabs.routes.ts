@@ -32,6 +32,11 @@ export const routes: Routes = [
           import('../edit-profile/edit-profile.page').then((m) => m.editProfilePage),
       },
       {
+        path: 'apply-critic',
+        loadComponent: () =>
+          import('../apply-critic/apply-critic.page').then((m) => m.applyCriticPage),
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',

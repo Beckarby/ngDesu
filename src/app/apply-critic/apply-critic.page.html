@@ -1,0 +1,78 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="apply-critic-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/profile"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="card">
+      <p class="intro-text">Fill your information so that our team can review your application to become a critic.</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-layout">
+        <div class="input-group">
+          <ion-label class="custom-label">FIRST NAME</ion-label>
+          <div class="input-wrapper">
+            <ion-input formControlName="firstName" placeholder="Enter your first name" autocomplete="off"></ion-input>
+          </div>
+          @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.firstName.errors?.['blank']) {
+                <p>First name cannot be empty or just spaces</p>
+              }
+              @if (form.controls.firstName.errors?.['minlength']) {
+                <p>Please enter a real first name</p>
+              }
+            </ion-text>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-label class="custom-label">LAST NAME</ion-label>
+          <div class="input-wrapper">
+            <ion-input formControlName="lastName" placeholder="Enter your last name" autocomplete="off"></ion-input>
+          </div>
+          @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.lastName.errors?.['blank']) {
+                <p>Last name cannot be empty or just spaces</p>
+              }
+              @if (form.controls.lastName.errors?.['minlength']) {
+                <p>Please enter a real last name</p>
+              }
+            </ion-text>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-label class="custom-label">BLOG INFO</ion-label>
+          <div class="input-wrapper input-wrapper--textarea">
+            <ion-textarea
+              formControlName="blogInfo"
+              placeholder="Tell us about your blog, your writing experience, and why you want to become a critic..."
+              rows="5"
+              auto-grow
+            ></ion-textarea>
+          </div>
+          @if (form.controls.blogInfo.touched && form.controls.blogInfo.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.blogInfo.errors?.['blank']) {
+                <p>Blog info cannot be empty or just spaces</p>
+              }
+              @if (form.controls.blogInfo.errors?.['minlength']) {
+                <p>Please provide more details (at least 10 characters)</p>
+              }
+            </ion-text>
+          }
+        </div>
+
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
+          <ion-icon name="send-outline" slot="end"></ion-icon>
+          Send Application
+        </ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>
