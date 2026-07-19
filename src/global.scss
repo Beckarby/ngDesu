@@ -43,3 +43,18 @@
     font-display: normal;
     font-display: swap;
 }
+
+/*
+ * Fix: stacked ion-router-outlet host elements overlaying the active page.
+ * Ionic retains stacked routed views inside ion-router-outlet; the outlet host
+ * itself is absolutely positioned with pointer-events enabled, so it sits above
+ * the active page and swallows every tap. Making the host transparent to
+ * pointer events (children stay interactive) restores clicks everywhere.
+ */
+ion-router-outlet {
+    pointer-events: none;
+}
+
+ion-router-outlet > * {
+    pointer-events: auto;
+}

@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import { IonContent, IonInput, IonItem, IonLabel, IonButton, IonIcon, IonText, IonRouterLink, IonToast, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonItem, IonLabel, IonButton, IonIcon, IonText, IonRouterLink, IonToast, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, mailOutline, lockClosedOutline } from 'ionicons/icons';
 import { authService } from '../services/auth';
@@ -28,7 +28,7 @@ export class loginPage {
   toastMessage = '';
   toastOpen = false;
 
-  private router = inject(Router);
+  private navController = inject(NavController);
 
   constructor() {
     addIcons({
@@ -52,7 +52,9 @@ export class loginPage {
       const res = await authService.login(username, password);
       console.log('[backend] login response', res);
       if (res.user) {
-        await this.router.navigateByUrl('/tabs/home');
+        console.log('[nav] login -> navigateRoot /tabs/home');
+        await this.navController.navigateRoot('/tabs/home', { animated: false });
+        console.log('[nav] navigateRoot completed', { url: location.hash });
       } else {
         this.showToast(res.message ?? 'Login failed');
       }

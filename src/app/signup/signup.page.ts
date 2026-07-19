@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import { IonContent, IonInput, IonLabel, IonButton, IonIcon, IonText, IonRouterLink, IonToast, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonLabel, IonButton, IonIcon, IonText, IonRouterLink, IonToast, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, mailOutline, lockClosedOutline, personOutline } from 'ionicons/icons';
 import { authService } from '../services/auth';
@@ -29,7 +29,7 @@ export class SignupPage {
   toastMessage = '';
   toastOpen = false;
 
-  private router = inject(Router);
+  private navController = inject(NavController);
 
   constructor() {
     addIcons({
@@ -54,7 +54,9 @@ export class SignupPage {
       const res = await authService.register(username, email, password);
       console.log('[backend] register response', res);
       if (res.status === 'success') {
-        await this.router.navigateByUrl('/tabs/home');
+        console.log('[nav] signup -> navigateRoot /tabs/home');
+        await this.navController.navigateRoot('/tabs/home', { animated: false });
+        console.log('[nav] signup navigateRoot completed', { url: location.hash });
       } else {
         this.showToast(res.message ?? 'Registration failed');
       }

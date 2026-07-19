@@ -40,6 +40,8 @@ src/
 - **All pages are standalone components** with `imports` arrays. Lazily loaded via `loadComponent()` (not `loadChildren`).
 - Routes: root redirects to `/tabs/home`. Tabs are defined in `tabs.routes.ts` as children of `TabsPage`.
 - Icons registered via `addIcons()` from `ionicons/icons` (see `tabs.page.ts`).
+- **No `IonicRouteStrategy`** in `main.ts` — uses Angular's default `RouteReuseStrategy`. Ionic's strategy retains stacked pages and caused stacked `ion-router-outlet` overlays that swallowed all taps. Auth-flow navigations use `NavController.navigateRoot(..., { animated: false })`.
+- **`global.scss` fixes outlet pointer events**: `ion-router-outlet { pointer-events: none }` with `ion-router-outlet > * { pointer-events: auto }`. Required so retained/stacked outlet hosts can't block clicks on the active page. Do not remove.
 
 ## Conventions
 

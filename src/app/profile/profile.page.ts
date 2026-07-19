@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { IonContent, IonIcon, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { IonContent, IonIcon, IonList, IonItem, IonLabel, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personCircleOutline, chatbubbleOutline, chevronForward, personOutline, logOutOutline, starOutline, tvOutline } from 'ionicons/icons';
 import { HeaderComponent } from '../header/header.component';
@@ -14,7 +14,7 @@ import { authService } from '../services/auth';
   imports: [RouterLink, IonContent, IonIcon, IonList, IonItem, IonLabel, HeaderComponent],
 })
 export class profilePage implements OnInit {
-  private router = inject(Router);
+  private navController = inject(NavController);
   protected profileStore = inject(ProfileStore);
 
   async signOut() {
@@ -26,7 +26,9 @@ export class profilePage implements OnInit {
       console.error('Logout failed:', err);
     }
     this.profileStore.clear();
-    await this.router.navigateByUrl('/login');
+    console.log('[nav] signOut -> navigateRoot /login');
+    await this.navController.navigateRoot('/login', { animated: false });
+    console.log('[nav] signOut navigateRoot completed', { url: location.hash });
   }
 
   ngOnInit(): void {
