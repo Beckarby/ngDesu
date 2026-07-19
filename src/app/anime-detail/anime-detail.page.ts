@@ -57,8 +57,10 @@ export class AnimeDetailPage implements OnInit {
       this.existingRating = null;
       this.userRating = 0;
       this.reviewText = '';
+      this.store.communityReviews.set([]);
       this.loadDetail();
       this.loadExistingRating();
+      this.loadCommunityReviews();
     });
   }
 
@@ -74,6 +76,26 @@ export class AnimeDetailPage implements OnInit {
       this.detail.set(null);
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  private async loadCommunityReviews() {
+    try {
+      const res = await toProcessService.getRating<ToProcessResponse<RatingAggregateRow[]>>({
+        animeId: this.animeId,
+      });
+      const mapped = (res.output ?? [])
+        .filter(r => Number(r.total_ratings) > 0)
+        .map(r => ({
+          id: r.fk_profile_id,
+          username: `User #${r.fk_profile_id}`,
+          rating: toProcessService.score100ToStars(Number(r.avg_score)),
+          review: r.comments?.[0] ?? '',
+        }));
+      this.store.communityReviews.set(mapped);
+    } catch (err) {
+      console.debug('loadCommunityReviews failed', err);
+      this.store.communityReviews.set([]);
     }
   }
 
@@ -191,6 +213,18 @@ export class AnimeDetailPage implements OnInit {
         const res = await toProcessService.addRating({ animeId: this.animeId, rating: score0to100, comment });
         console.log('[backend] addRating response', res);
         this.loadExistingRating();
+      }
+      const local = this.store.reviews().find(r => r.animeId === this.animeId);
+      if (local) {
+        this.store.updateReview(local.id, { rating: this.userRating, review: comment });
+      } else {
+        this.store.addReview({
+          id: this.store.nextReviewId(),
+          animeId: this.animeId,
+          animeName: this.detail()?.title ?? `Anime #${this.animeId}`,
+          rating: this.userRating,
+          review: comment,
+        });
       }
       this.showToast('Review posted', 'success');
     } catch (err: any) {

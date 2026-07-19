@@ -28,6 +28,7 @@ export class homePage implements OnInit {
         genre: '',
       });
       this.topAnime.set(res.output.media.map(m => this.toCard(m)));
+      console.log('[home] ranking', this.topAnime().map(a => ({ title: a.title, score: a.score })));
     } catch (err) {
       console.error('home fetch failed', err);
       this.topAnime.set([]);

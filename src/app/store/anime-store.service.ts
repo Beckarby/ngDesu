@@ -34,32 +34,44 @@ export interface LibraryEntry {
 }
 
 const LIBRARY_KEY = 'ngdesu_library';
+const REVIEWS_KEY = 'ngdesu_reviews';
 
 @Injectable({ providedIn: 'root' })
 export class AnimeStore {
-  readonly reviews = signal<Review[]>([]);
+  readonly reviews = signal<Review[]>(this.hydrateReviews());
 
-  readonly communityReviews = signal<CommunityReview[]>([
-    { id: 1, username: 'AnimeFan42', rating: 5, review: 'Absolutely masterpiece! The storytelling, character development, and animation are top-notch. This is the kind of anime that stays with you long after you finish watching.' },
-    { id: 2, username: 'MangaLover', rating: 4, review: 'Really enjoyed this one. The pacing was great and the plot kept me hooked throughout. Only minor gripes with the ending, but overall a fantastic experience.' },
-    { id: 3, username: 'OtakuKing', rating: 5, review: 'One of the best anime I have ever seen. The themes are deep and thought-provoking. Every episode left me wanting more. A must-watch for any anime fan.' },
-    { id: 4, username: 'NightOwl', rating: 3, review: 'It was good but not mind-blowing. Some episodes felt slow and the middle section dragged a bit. The soundtrack and visuals are beautiful though.' },
-  ]);
+  readonly communityReviews = signal<CommunityReview[]>([]);
 
   readonly libraryAnime = signal<LibraryEntry[]>(this.hydrateLibrary());
 
   readonly categories = signal<string[]>(['All', 'Action', 'Sci-Fi', 'Romance', 'Slice of Life', 'Fantasy']);
 
   addReview(review: Review) {
-    this.reviews.update(r => [...r, review]);
+    this.reviews.update(r => {
+      const next = [...r, review];
+      this.persistReviews(next);
+      return next;
+    });
   }
 
   updateReview(id: number, changes: Partial<Review>) {
-    this.reviews.update(r => r.map(rev => rev.id === id ? { ...rev, ...changes } : rev));
+    this.reviews.update(r => {
+      const next = r.map(rev => rev.id === id ? { ...rev, ...changes } : rev);
+      this.persistReviews(next);
+      return next;
+    });
   }
 
   deleteReview(id: number) {
-    this.reviews.update(r => r.filter(rev => rev.id !== id));
+    this.reviews.update(r => {
+      const next = r.filter(rev => rev.id !== id);
+      this.persistReviews(next);
+      return next;
+    });
+  }
+
+  nextReviewId(): number {
+    return Math.max(0, ...this.reviews().map(r => r.id)) + 1;
   }
 
   getAnimeStatus(id: number): WatchStatus | null {
@@ -129,7 +141,7 @@ export class AnimeStore {
 
     // 3. For each anime, fetch the review (rating + comment).
     const fetched: Review[] = [];
-    let nextId = 1;
+    let nextId = this.nextReviewId();
     for (const entry of libraryEntries) {
       try {
         const res = await toProcessService.getRating<ToProcessResponse<RatingAggregateRow[]>>({
@@ -151,6 +163,7 @@ export class AnimeStore {
       }
     }
     this.reviews.set(fetched);
+    this.persistReviews(fetched);
   }
 
   private persistLibrary(list: LibraryEntry[]): void {
@@ -159,6 +172,27 @@ export class AnimeStore {
     } catch (err) {
       console.error('Failed to persist library', err);
     }
+  }
+
+  private persistReviews(list: Review[]): void {
+    try {
+      localStorage.setItem(REVIEWS_KEY, JSON.stringify(list));
+    } catch (err) {
+      console.error('Failed to persist reviews', err);
+    }
+  }
+
+  private hydrateReviews(): Review[] {
+    try {
+      const raw = localStorage.getItem(REVIEWS_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as Review[];
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (err) {
+      console.error('Failed to hydrate reviews', err);
+    }
+    return [];
   }
 
   private hydrateLibrary(): LibraryEntry[] {
