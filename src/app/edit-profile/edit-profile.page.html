@@ -42,12 +42,25 @@
           }
         </div>
 
-        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
-          Save
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid || submitting">
+          @if (submitting) {
+            <ion-spinner name="dots"></ion-spinner>
+          } @else {
+            Save
+          }
         </ion-button>
       </form>
     </div>
   </div>
+
+  <ion-toast
+    [isOpen]="toastOpen"
+    [message]="toastMessage"
+    [duration]="3000"
+    (didDismiss)="toastOpen = false"
+    position="top"
+    [color]="toastColor"
+  ></ion-toast>
 
   <ion-modal
     #avatarModal

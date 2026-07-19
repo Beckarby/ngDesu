@@ -94,3 +94,11 @@ ion-chip.chip-inactive {
   gap: 12px;
   padding: 0 12px;
 }
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 0;
+  color: rgba(255, 255, 255, 0.5);
+}

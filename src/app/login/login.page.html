@@ -23,7 +23,7 @@
         <div class="input-group">
           <div class="label-row">
             <ion-label class="custom-label">PASSWORD</ion-label>
-            <a href="#" class="forgot-link">FORGOT?</a>
+            <!-- <a href="#" class="forgot-link">FORGOT?</a> -->
           </div>
           <div class="input-wrapper password-row">
             <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
@@ -42,15 +42,29 @@
           }
         </div>
 
-        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
-          Login
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid || submitting">
+          @if (submitting) {
+            <ion-spinner name="dots"></ion-spinner>
+          } @else {
+            Login
+          }
         </ion-button>
       </form>
 
+      
       <div class="footer">
         <span class="footer-text">New user?</span>
         <ion-router-link class="footer-link" routerLink="/signup">Join the network</ion-router-link>
       </div>
     </div>
   </div>
+
+  <ion-toast
+    [isOpen]="toastOpen"
+    [message]="toastMessage"
+    [duration]="3000"
+    (didDismiss)="toastOpen = false"
+    position="top"
+    color="danger"
+  ></ion-toast>
 </ion-content>

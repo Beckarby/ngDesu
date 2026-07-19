@@ -2,9 +2,10 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { IonContent, IonInput, IonItem, IonLabel, IonButton, IonIcon, IonText, IonRouterLink } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonItem, IonLabel, IonButton, IonIcon, IonText, IonRouterLink, IonToast, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, mailOutline, lockClosedOutline } from 'ionicons/icons';
+import { authService } from '../services/auth';
 
 function nonEmptyValidator(control: AbstractControl): ValidationErrors | null {
   return control.value?.toString().trim().length > 0 ? null : { required: true };
@@ -14,7 +15,7 @@ function nonEmptyValidator(control: AbstractControl): ValidationErrors | null {
   selector: 'app-login',
   templateUrl: 'login.page.html',
   styleUrls: ['login.page.scss'],
-  imports: [ReactiveFormsModule, RouterLink, IonContent, IonInput, IonItem, IonLabel, IonButton, IonIcon, IonText, IonRouterLink],
+  imports: [ReactiveFormsModule, RouterLink, IonContent, IonInput, IonItem, IonLabel, IonButton, IonIcon, IonText, IonRouterLink, IonToast, IonSpinner],
 })
 export class loginPage {
   form = new FormGroup({
@@ -23,24 +24,48 @@ export class loginPage {
   });
 
   showPassword = false;
+  submitting = false;
+  toastMessage = '';
+  toastOpen = false;
 
   private router = inject(Router);
 
   constructor() {
-    addIcons({ 
-      'eye-outline': eyeOutline, 
+    addIcons({
+      'eye-outline': eyeOutline,
       'eye-off-outline': eyeOffOutline,
       'mail-outline': mailOutline,
-      'lock-closed-outline': lockClosedOutline
+      'lock-closed-outline': lockClosedOutline,
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
+    console.log('[click] login submit');
     if (this.form.invalid) {
-      console.log('Form errors:', this.form.errors);
       this.form.markAllAsTouched();
       return;
     }
-    console.log(this.form.value);
+    const { username, password } = this.form.value as { username: string; password: string };
+    console.log('[click] login submit -> authService.login', { username });
+    this.submitting = true;
+    try {
+      const res = await authService.login(username, password);
+      console.log('[backend] login response', res);
+      if (res.user) {
+        await this.router.navigateByUrl('/tabs/home');
+      } else {
+        this.showToast(res.message ?? 'Login failed');
+      }
+    } catch (err: any) {
+      console.error('[backend] login error', err);
+      this.showToast(err?.response?.data?.message ?? 'Login failed');
+    } finally {
+      this.submitting = false;
+    }
+  }
+
+  private showToast(msg: string) {
+    this.toastMessage = msg;
+    this.toastOpen = true;
   }
 }

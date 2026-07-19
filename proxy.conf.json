@@ -1,0 +1,9 @@
+{
+  "/api": {
+    "target": "https://ngdesu.kaucrow.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": { "^/api": "/api" },
+    "logLevel": "debug"
+  }
+}

@@ -8,7 +8,11 @@
 </ion-header>
 
 <ion-content>
-  @if (detail) {
+  @if (loading()) {
+    <div class="loading-state">
+      <ion-spinner name="dots"></ion-spinner>
+    </div>
+  } @else if (detail(); as detail) {
     <div class="cover-section">
       <img [src]="detail.image || 'assets/card/test.jpg'" alt="{{ detail.title }}" class="cover-image" />
       <div class="cover-overlay">
@@ -125,4 +129,13 @@
       </ion-list>
     </ng-template>
   </ion-popover>
+
+  <ion-toast
+    [isOpen]="toastOpen"
+    [message]="toastMessage"
+    [duration]="3000"
+    (didDismiss)="toastOpen = false"
+    position="top"
+    [color]="toastColor"
+  ></ion-toast>
 </ion-content>

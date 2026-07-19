@@ -1,6 +1,12 @@
 import { Routes } from '@angular/router';
+import { authActivateGuard, authMatchGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/login',
+  },
   {
     path: 'signup',
     loadComponent: () => import('./signup/signup.page').then((m) => m.SignupPage),
@@ -11,10 +17,16 @@ export const routes: Routes = [
   },
   {
     path: 'anime/:id',
+    canActivate: [authActivateGuard],
     loadComponent: () => import('./anime-detail/anime-detail.page').then((m) => m.AnimeDetailPage),
   },
   {
-    path: '',
+    path: 'tabs',
+    canMatch: [authMatchGuard],
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+  },
+  {
+    path: '**',
+    redirectTo: '/login',
   },
 ];

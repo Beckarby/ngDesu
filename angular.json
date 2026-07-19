@@ -18,6 +18,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+              "baseHref": "./",
+              "deployUrl": "./",
             "outputPath": {
               "base": "www",
               "browser": ""
@@ -75,6 +77,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "app:build:production"
@@ -129,7 +134,10 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": [
+      "@ionic/angular-toolkit"
+    ],
+    "analytics": false
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

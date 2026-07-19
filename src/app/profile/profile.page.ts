@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personCircleOutline, chatbubbleOutline, chevronForward, personOutline, logOutOutline, starOutline, tvOutline } from 'ionicons/icons';
 import { HeaderComponent } from '../header/header.component';
 import { ProfileStore } from '../store/profile-store.service';
+import { authService } from '../services/auth';
 
 @Component({
   selector: 'app-profile',
@@ -12,14 +13,24 @@ import { ProfileStore } from '../store/profile-store.service';
   styleUrls: ['profile.page.scss'],
   imports: [RouterLink, IonContent, IonIcon, IonList, IonItem, IonLabel, HeaderComponent],
 })
-export class profilePage {
+export class profilePage implements OnInit {
   private router = inject(Router);
   protected profileStore = inject(ProfileStore);
 
-  signOut() {
-    this.profileStore.currentAvatar.set(null);
-    this.profileStore.nickname.set(null);
-    this.router.navigateByUrl('/login');
+  async signOut() {
+    console.log('[click] profile signOut');
+    try {
+      const res = await authService.logout();
+      console.log('[backend] logout response', res);
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+    this.profileStore.clear();
+    await this.router.navigateByUrl('/login');
+  }
+
+  ngOnInit(): void {
+    this.profileStore.loadFromCache();
   }
 
   constructor() {

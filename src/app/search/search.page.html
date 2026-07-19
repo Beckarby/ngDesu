@@ -7,7 +7,8 @@
 <ion-content>
   <div class="search-container">
     <ion-searchbar
-      [(ngModel)]="searchTerm"
+      [ngModel]="searchTerm"
+      (ionInput)="onSearchInput($event)"
       placeholder="Search anime..."
       class="search-bar"
       animated
@@ -18,28 +19,45 @@
         <ion-chip
           [class.chip-active]="selectedCategory === category"
           [class.chip-inactive]="selectedCategory !== category"
-          (click)="selectedCategory = category"
+          (click)="onCategorySelect(category)"
         >
           {{ category }}
         </ion-chip>
       }
     </div>
 
-    <ion-segment [(ngModel)]="sortBy" class="sort-segment">
+    <ion-segment [ngModel]="sortBy" (ionChange)="onSortChange($event)" class="sort-segment">
       <ion-segment-button value="score">
         <ion-label>Score</ion-label>
       </ion-segment-button>
       <ion-segment-button value="date">
         <ion-label>Date</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="status">
+        <ion-label>Status</ion-label>
+      </ion-segment-button>
     </ion-segment>
 
+    @if (loading() && results().length === 0) {
+      <div class="loading-state">
+        <ion-spinner name="dots"></ion-spinner>
+      </div>
+    }
+
     <div class="anime-grid">
-      @for (anime of filteredAnime; track anime.id) {
+      @for (media of results(); track media.id) {
         <div class="anime-card-item">
-          <app-anime-card [anime]="anime"></app-anime-card>
+          <app-anime-card [anime]="cardFor(media)"></app-anime-card>
         </div>
       }
     </div>
+
+    <ion-infinite-scroll
+      threshold="100px"
+      (ionInfinite)="loadMore($event)"
+      [disabled]="!pageInfo()?.hasNextPage || loadingMore()"
+    >
+      <ion-infinite-scroll-content loadingSpinner="dots" loadingText="Loading more..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </div>
 </ion-content>

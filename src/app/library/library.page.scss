@@ -54,6 +54,14 @@
   padding: 16px;
 }
 
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .anime-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

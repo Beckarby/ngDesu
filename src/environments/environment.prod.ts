@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://ng-desu.kaucrow.com/api'
+  apiUrl: 'https://ngdesu.kaucrow.com/api'
 };

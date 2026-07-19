@@ -47,32 +47,67 @@
         </div>
 
         <div class="input-group">
-          <ion-label class="custom-label">BLOG INFO</ion-label>
+          <ion-label class="custom-label">BLOG</ion-label>
           <div class="input-wrapper input-wrapper--textarea">
             <ion-textarea
-              formControlName="blogInfo"
-              placeholder="Tell us about your blog, your writing experience, and why you want to become a critic..."
+              formControlName="blog"
+              placeholder="Your blog name or URL (e.g. myanimereviews.com)"
+              rows="2"
+              auto-grow
+            ></ion-textarea>
+          </div>
+          @if (form.controls.blog.touched && form.controls.blog.invalid) {
+            <ion-text class="error-text">
+              @if (form.controls.blog.errors?.['blank']) {
+                <p>Blog cannot be empty or just spaces</p>
+              }
+              @if (form.controls.blog.errors?.['minlength']) {
+                <p>Please enter your blog name or URL</p>
+              }
+            </ion-text>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-label class="custom-label">INFO</ion-label>
+          <div class="input-wrapper input-wrapper--textarea">
+            <ion-textarea
+              formControlName="info"
+              placeholder="Tell us about your writing experience and why you want to become a critic..."
               rows="5"
               auto-grow
             ></ion-textarea>
           </div>
-          @if (form.controls.blogInfo.touched && form.controls.blogInfo.invalid) {
+          @if (form.controls.info.touched && form.controls.info.invalid) {
             <ion-text class="error-text">
-              @if (form.controls.blogInfo.errors?.['blank']) {
-                <p>Blog info cannot be empty or just spaces</p>
+              @if (form.controls.info.errors?.['blank']) {
+                <p>Info cannot be empty or just spaces</p>
               }
-              @if (form.controls.blogInfo.errors?.['minlength']) {
+              @if (form.controls.info.errors?.['minlength']) {
                 <p>Please provide more details (at least 10 characters)</p>
               }
             </ion-text>
           }
         </div>
 
-        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
-          <ion-icon name="send-outline" slot="end"></ion-icon>
-          Send Application
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid || submitting">
+          @if (submitting) {
+            <ion-spinner name="dots"></ion-spinner>
+          } @else {
+            <ion-icon name="send-outline" slot="end"></ion-icon>
+            Send Application
+          }
         </ion-button>
       </form>
     </div>
   </div>
+
+  <ion-toast
+    [isOpen]="toastOpen"
+    [message]="toastMessage"
+    [duration]="3000"
+    (didDismiss)="toastOpen = false"
+    position="top"
+    [color]="toastColor"
+  ></ion-toast>
 </ion-content>

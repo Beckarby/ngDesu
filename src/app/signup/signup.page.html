@@ -18,28 +18,6 @@
           }
         </div>
 
-        <div class="name-row">
-          <div class="input-group">
-            <ion-label class="custom-label">FIRST NAME</ion-label>
-            <div class="input-wrapper">
-              <ion-input formControlName="firstName" placeholder="First name" autocomplete="off"></ion-input>
-            </div>
-            @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
-              <ion-text class="error-text">Required</ion-text>
-            }
-          </div>
-
-          <div class="input-group">
-            <ion-label class="custom-label">LAST NAME</ion-label>
-            <div class="input-wrapper">
-              <ion-input formControlName="lastName" placeholder="Last name" autocomplete="off"></ion-input>
-            </div>
-            @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
-              <ion-text class="error-text">Required</ion-text>
-            }
-          </div>
-        </div>
-
         <div class="input-group">
           <ion-label class="custom-label">EMAIL ADDRESS</ion-label>
           <div class="input-wrapper">
@@ -69,8 +47,12 @@
           }
         </div>
 
-        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid">
-          Sign Up
+        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="form.invalid || submitting">
+          @if (submitting) {
+            <ion-spinner name="dots"></ion-spinner>
+          } @else {
+            Sign Up
+          }
         </ion-button>
       </form>
 
@@ -80,4 +62,13 @@
       </div>
     </div>
   </div>
-</ion-content> 
+
+  <ion-toast
+    [isOpen]="toastOpen"
+    [message]="toastMessage"
+    [duration]="3000"
+    (didDismiss)="toastOpen = false"
+    position="top"
+    color="danger"
+  ></ion-toast>
+</ion-content>
