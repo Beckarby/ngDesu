@@ -56,11 +56,24 @@ export class loginPage {
         await this.navController.navigateRoot('/tabs/home', { animated: false });
         console.log('[nav] navigateRoot completed', { url: location.hash });
       } else {
-        this.showToast(res.message ?? 'Login failed');
+        console.warn('[backend] login no user in response', res);
+        const detail = res.message
+          ?? (res.raw?.status ? `Status: ${res.raw.status}` : null)
+          ?? JSON.stringify(res.raw ?? {}).slice(0, 80);
+        const shown = typeof detail === 'string' ? detail : 'Login failed';
+        console.log('[backend] login toast', shown);
+        this.showToast(shown);
       }
     } catch (err: any) {
       console.error('[backend] login error', err);
-      this.showToast(err?.response?.data?.message ?? 'Login failed');
+      const detail =
+        (typeof err?.response?.data === 'object' && err?.response?.data?.message) ||
+        (typeof err?.response?.data === 'string' ? err.response.data : null) ||
+        err?.message ||
+        (err?.response ? `HTTP ${err.response.status}` : 'Network error');
+      const shown = typeof detail === 'string' ? detail.slice(0, 120) : 'Login failed';
+      console.log('[backend] login toast', shown);
+      this.showToast(shown);
     } finally {
       this.submitting = false;
     }

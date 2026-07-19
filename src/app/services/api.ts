@@ -21,11 +21,19 @@ function isPublicEndpoint(url?: string): boolean {
 }
 
 function toAbsoluteUrl(endpoint: string): string {
-  return new URL(endpoint, environment.apiUrl).toString();
+  if (/^https?:\/\//i.test(endpoint)) {
+    return endpoint;
+  }
+
+  const baseUrl = new URL(environment.apiUrl, typeof window !== 'undefined' ? window.location.origin : 'https://localhost');
+  const basePath = baseUrl.pathname.replace(/\/$/, '');
+  const endpointPath = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  return `${baseUrl.origin}${basePath}${endpointPath}`;
 }
 
-function normalizeParams(params?: AxiosRequestConfig['params']): Record<string, string | string[]> | undefined {
-  if (!params) return undefined;
+function normalizeParams(params?: AxiosRequestConfig['params']): Record<string, string | string[]> {
+  if (!params) return {};
 
   const normalized: Record<string, string | string[]> = {};
   for (const [key, value] of Object.entries(params as Record<string, unknown>)) {
@@ -36,7 +44,7 @@ function normalizeParams(params?: AxiosRequestConfig['params']): Record<string, 
     }
   }
 
-  return Object.keys(normalized).length ? normalized : undefined;
+  return normalized;
 }
 
 function normalizeHeaders(headers?: AxiosRequestConfig['headers'], data?: unknown): Record<string, string> | undefined {
@@ -70,13 +78,20 @@ function createAxiosLikeError<T>(status: number, url: string, data: T, config: A
 
 async function nativeRequest<T>(method: string, endpoint: string, data?: unknown, config: AxiosRequestConfig = {}): Promise<T> {
   const url = toAbsoluteUrl(endpoint);
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(normalizeHeaders(config.headers, data) ?? {}),
+  };
+  if (data instanceof FormData) {
+    delete headers['Content-Type'];
+  }
   console.log('[api request]', { method, url: endpoint, data, params: config.params, headers: config.headers });
   const response = await Http.request({
     url,
     method,
     data,
     params: normalizeParams(config.params),
-    headers: normalizeHeaders(config.headers, data),
+    headers,
   });
 
   console.log('[api response]', { method, url: endpoint, status: response.status, data: response.data });

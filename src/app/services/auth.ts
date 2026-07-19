@@ -45,6 +45,7 @@ const IMAGE_KEY = 'ngdesu_user_image';
 export const authService = {
   async login(username: string, password: string): Promise<LoginResponse> {
     const data = await api.post<LoginBackendResponse>('/login', { user: username, pass: password });
+    console.log('[backend] raw login response', data);
     const res: LoginResponse = { raw: data };
     const backendUser = data.data ?? data.user;
     if (data.status === 'success') {

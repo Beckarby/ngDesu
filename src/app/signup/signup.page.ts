@@ -58,11 +58,23 @@ export class SignupPage {
         await this.navController.navigateRoot('/tabs/home', { animated: false });
         console.log('[nav] signup navigateRoot completed', { url: location.hash });
       } else {
-        this.showToast(res.message ?? 'Registration failed');
+        console.warn('[backend] signup no success status', res);
+        const detail = res.message
+          ?? (res.status ? `Status: ${res.status}` : null);
+        const shown = (typeof detail === 'string' && detail) ? detail : 'Registration failed';
+        console.log('[backend] signup toast', shown);
+        this.showToast(shown);
       }
     } catch (err: any) {
       console.error('[backend] register error', err);
-      this.showToast(err?.response?.data?.message ?? 'Registration failed');
+      const detail =
+        (typeof err?.response?.data === 'object' && err?.response?.data?.message) ||
+        (typeof err?.response?.data === 'string' ? err.response.data : null) ||
+        err?.message ||
+        (err?.response ? `HTTP ${err.response.status}` : 'Network error');
+      const shown = typeof detail === 'string' ? detail.slice(0, 120) : 'Registration failed';
+      console.log('[backend] signup toast', shown);
+      this.showToast(shown);
     } finally {
       this.submitting = false;
     }

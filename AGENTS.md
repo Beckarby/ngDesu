@@ -42,6 +42,7 @@ src/
 - Icons registered via `addIcons()` from `ionicons/icons` (see `tabs.page.ts`).
 - **No `IonicRouteStrategy`** in `main.ts` — uses Angular's default `RouteReuseStrategy`. Ionic's strategy retains stacked pages and caused stacked `ion-router-outlet` overlays that swallowed all taps. Auth-flow navigations use `NavController.navigateRoot(..., { animated: false })`.
 - **`global.scss` fixes outlet pointer events**: `ion-router-outlet { pointer-events: none }` with `ion-router-outlet > * { pointer-events: auto }`. Required so retained/stacked outlet hosts can't block clicks on the active page. Do not remove.
+- **APK WebView origin** (`capacitor.config.ts` → `server.androidScheme: 'https'`). The WebView loads from `https://localhost`. Backend session cookie is `SameSite=Strict`, which means it is NOT sent on cross-site requests from the WebView to `ngdesu.kaucrow.com` — login appears to fail on the APK even when the HTTP call itself succeeds. The proper fix is **on the backend**: set the session cookie's `sameSite` to `'none'` and `secure` to `true` in Express's session config (the URL is already HTTPS). Until that change is made, login + session won't work on the APK.
 
 ## Conventions
 
